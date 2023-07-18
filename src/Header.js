@@ -1,13 +1,14 @@
-const Header = () =>{
+const Header = (props) =>{
     return(
-        <header style={{
-            backgroundColor: 'mediumblue',
-            color: '#fff'
-        }}>
-            <h1>Groceries List</h1>
+        <header>
+            <h1>{props.title}</h1>
 
         </header>
     )
+}
+
+Header.defaultProps = {
+    title: "Deafult Tiltle"
 }
 
 export default Header
