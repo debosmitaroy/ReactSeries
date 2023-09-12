@@ -9,11 +9,16 @@
       "id": 2,
       "checked": false,
       "item": "Pizza"
-    },
+    } ,
     {
       "id": 3,
       "checked": false,
-      "item": "Bread"
+      "item": "abc"
+    },
+    {
+      "id": 4,
+      "checked": false,
+      "item": "curry"
     }
   ]
 }

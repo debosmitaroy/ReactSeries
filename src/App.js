@@ -20,22 +20,24 @@ function App() {
 
   useEffect(() => {
     // localStorage.setItem('shoppinglist', JSON.stringify(items))
+
     const fetchItems = async () => {
-      try {
+      try{
+        //Fetch response, throw error if response not ok, get the json, set values.
         const response = await fetch(API_URL);
-        if (!response.ok) throw Error('Did not recieve expected data');
+        if (!response.ok){throw Error('Did not recieve expected data');}
         const listItems = await response.json();
         console.log(listItems)
         setItems(listItems)
         setFetchError(null)
 
-      } catch (err) {
-        
+      }catch(err){
         setFetchError(err.message)
-      } finally {
-        setIsLoading(false);
+      }finally{
+        setIsLoading(false)
       }
     }
+
     setTimeout(()=>{
       (async ()=> await fetchItems())();
     },2000)
@@ -47,27 +49,33 @@ function App() {
     // console.log(listItems)
     setItems(listItems)
 
-    const myItem = listItems.filter((item) => item.id===id);
+    const updatedItem = listItems.filter((item) => item.id ===id);
     const updateOptions = {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON. stringify({checked: myItem[0].checked})
+      headers: {'Content-type':'application/json'},
+      body: JSON.stringify({checked: updatedItem[0].checked})
     };
-    const reqUrl = `${API_URL}/${id}`;
+    const reqUrl = `${API_URL}/${id}`
     const result = await apiRequest(reqUrl,updateOptions);
     if (result) setFetchError(result);
+
+
+    
   }
 
   const handleDelete = async (id) => {
     const listItems = items.filter((item) => { return item.id !== id });
     setItems(listItems)
 
+    // const reqUrl = `${API_URL}/${id}`
+    // const deleteOptions = {method: 'DELETE'};
+    // const result = await apiRequest(reqUrl,deleteOptions);
+    // if (result) setFetchError(result);
+
     const reqUrl = `${API_URL}/${id}`
-    const deleteOptions = {method: 'DELETE'};
-    const result = await apiRequest(reqUrl,deleteOptions);
-    if (result) setFetchError(result);
+    const deleteOptions = {method: 'DELETE'}
+    const result = await apiRequest(reqUrl, deleteOptions);
+    if (result) setFetchError(result)
   }
 
   const addItem = async (item) => {
@@ -75,16 +83,15 @@ function App() {
     const myNewItem = { id, checked: false, item };
     const listItems = [...items, myNewItem]
     setItems(listItems)
+    // new item is set using setItems() but we'll also update the rest api(json-server)
 
-    const postOptions = {
-      method: 'POST', 
-      headers:{
-        'Content-Type': 'application/json'
-      },
+    const postOptions= {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
       body: JSON.stringify(myNewItem)
-    }
+      }
     const result = await apiRequest(API_URL,postOptions);
-    if (result) setFetchError(result)
+    if (result) setFetchError(result);
 
   }
 
